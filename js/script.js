@@ -1,64 +1,100 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Navigation mobile
+
+  /* =====================================================
+     NAVIGATION MOBILE
+     ===================================================== */
   const navToggle = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('.nav-menu');
-  
-  if (navToggle) {
+  const navMenu   = document.querySelector('.nav-menu');
+
+  if (navToggle && navMenu) {
     navToggle.addEventListener('click', () => {
       navToggle.classList.toggle('active');
       navMenu.classList.toggle('active');
     });
 
-    // Fermer le menu au clic sur un lien
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
       });
     });
-  }
 
-  // Thème sombre/clair
-  const themeBtn = document.getElementById('theme-toggle');
-  const themeIcon = document.querySelector('.theme-icon');
-  
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-theme');
-      
-      if (document.body.classList.contains('dark-theme')) {
-        themeIcon.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        themeIcon.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
+    document.addEventListener('click', (e) => {
+      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
       }
     });
-
-    // Charger le thème sauvegardé
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('dark-theme');
-      themeIcon.textContent = '☀️';
-    }
   }
 
-  // Citations aléatoires
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+  }
+
+  /* =====================================================
+     THÈME SOMBRE / CLAIR
+     ===================================================== */
+  const themeBtn  = document.getElementById('theme-toggle');
+  const themeIcon = document.querySelector('.theme-icon');
+
+  if (themeBtn) {
+    const applyTheme = (dark) => {
+      document.body.classList.toggle('dark-theme', dark);
+      if (themeIcon) themeIcon.textContent = dark ? '☀️' : '🌙';
+    };
+
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('dark-theme');
+      applyTheme(!isDark);
+      localStorage.setItem('theme', !isDark ? 'dark' : 'light');
+    });
+
+    applyTheme(localStorage.getItem('theme') === 'dark');
+  }
+
+  /* =====================================================
+     CITATIONS ALÉATOIRES (home)
+     ===================================================== */
   const citations = [
     "Miminella, tu es mon rayon de soleil 🌸",
     "Chaque jour avec toi est plus doux qu'un Monchhichi 🐵💕",
     "À tes côtés, tout devient magique ✨",
     "Mon cœur bat pour toi, Ornella ❤️",
-    "Tu es ma joie quotidienne, ma petite Miminella 💖"
+    "Tu es ma joie quotidienne, ma petite Miminella 💖",
+    "Ta présence illumine chaque instant de ma vie 🌟",
+    "Avec toi, chaque moment devient un souvenir précieux 💫",
   ];
 
   const citationEl = document.getElementById('citation');
   if (citationEl) {
-    const randomIndex = Math.floor(Math.random() * citations.length);
-    citationEl.textContent = citations[randomIndex];
+    let lastIdx = -1;
+    function setRandomCitation() {
+      let idx;
+      do { idx = Math.floor(Math.random() * citations.length); } while (idx === lastIdx);
+      lastIdx = idx;
+      citationEl.style.opacity = '0';
+      citationEl.style.transform = 'translateY(6px)';
+      setTimeout(() => {
+        citationEl.textContent = citations[idx];
+        citationEl.style.transition = 'all 0.3s ease';
+        citationEl.style.opacity = '1';
+        citationEl.style.transform = 'translateY(0)';
+      }, 280);
+    }
+
+    citationEl.style.transition = 'all 0.3s ease';
+    citationEl.textContent = citations[Math.floor(Math.random() * citations.length)];
+    citationEl.style.cursor = 'pointer';
+    citationEl.title = 'Clique pour une nouvelle citation ✨';
+    citationEl.addEventListener('click', setRandomCitation);
   }
 
-  // Cœur secret
+  /* =====================================================
+     ÉLÉMENTS SECRETS
+     ===================================================== */
   const coeurSecret = document.getElementById('coeur-secret');
   if (coeurSecret) {
     coeurSecret.addEventListener('click', () => {
@@ -66,549 +102,607 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Bouton page secrète bonus
   const codeBtn = document.getElementById('code-secret-btn');
   if (codeBtn) {
     codeBtn.addEventListener('click', () => {
-      const code = prompt('💝 Indice : Evenement recent ou tu a beaucoup stresser (jjmmaa) \n');
+      const code = prompt('💝 Indice : Evenement récent où tu as beaucoup stressé (jjmmaa)');
       if (code && code.toLowerCase() === '310725') {
         window.location.href = 'secret2.html';
-      } else if (code) {
-        alert('Ce n\'est pas le bon code... Réfléchis bien à l\'indice ! 💭');
+      } else if (code !== null) {
+        showNotification('Ce n\'est pas le bon code... Réfléchis bien ! 💭');
       }
     });
   }
 
-  // TIMERS
-  // Date de début en heure de Paris (France)
-  const dateDebut = new Date('2025-04-24T00:00:00+02:00'); // +02:00 = heure d'été à Paris
-  const prochainEvent = { month: 12, day: 24, hour: 0, minute: 0 };
-  const ornellaBirthday = { month: 10, day: 25, hour: 0, minute: 0 };
-  const aaronBirthday = { month: 2, day: 26, hour: 0, minute: 0 };
+  /* =====================================================
+     TIMERS EN TEMPS RÉEL
+     ===================================================== */
+  const dateDebut       = new Date('2025-04-24T00:00:00+02:00');
+  const prochainEvent   = { month: 12, day: 24 };
+  const ornellaBirthday = { month: 10, day: 25 };
+  const aaronBirthday   = { month: 2,  day: 26 };
+
+  function pad(n) { return String(n).padStart(2, '0'); }
 
   function formatDuration(ms) {
-    if (ms < 0) ms = 0;
-    
-    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-    ms -= days * (1000 * 60 * 60 * 24);
-    
-    const hours = Math.floor(ms / (1000 * 60 * 60));
-    ms -= hours * (1000 * 60 * 60);
-    
-    const minutes = Math.floor(ms / (1000 * 60));
-    ms -= minutes * (1000 * 60);
-    
+    if (ms <= 0) return '0j 0h 0m 0s';
+    const days    = Math.floor(ms / 86400000); ms %= 86400000;
+    const hours   = Math.floor(ms / 3600000);  ms %= 3600000;
+    const minutes = Math.floor(ms / 60000);    ms %= 60000;
     const seconds = Math.floor(ms / 1000);
-    
-    return `${days}j ${hours}h ${minutes}m ${seconds}s`;
+    return `${days}j ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
   }
 
-  function getNextOccurrence(month, day, hour = 0, minute = 0) {
-    const now = new Date();
-    let next = new Date(now.getFullYear(), month - 1, day, hour, minute);
-    
-    if (next <= now) {
-      next = new Date(now.getFullYear() + 1, month - 1, day, hour, minute);
-    }
-    
+  function getNextOccurrence(month, day) {
+    const now  = new Date();
+    let next   = new Date(now.getFullYear(), month - 1, day, 0, 0, 0);
+    if (next <= now) next = new Date(now.getFullYear() + 1, month - 1, day, 0, 0, 0);
     return next;
   }
 
   function updateTimers() {
     const now = new Date();
-    
-    // Temps écoulé depuis le début
     const compteurEl = document.getElementById('compteur');
-    if (compteurEl) {
-      const elapsed = now - dateDebut;
-      compteurEl.textContent = formatDuration(elapsed);
-    }
-
-    // Prochain événement
+    if (compteurEl) compteurEl.textContent = formatDuration(now - dateDebut);
     const nextEventEl = document.getElementById('next-event');
-    if (nextEventEl) {
-      const nextEvent = getNextOccurrence(prochainEvent.month, prochainEvent.day);
-      const remaining = nextEvent - now;
-      nextEventEl.textContent = formatDuration(remaining);
-    }
-
-    // Anniversaires
+    if (nextEventEl) nextEventEl.textContent = formatDuration(getNextOccurrence(prochainEvent.month, prochainEvent.day) - now);
     const ornellaEl = document.getElementById('ornella-birthday');
-    if (ornellaEl) {
-      const nextOrnella = getNextOccurrence(ornellaBirthday.month, ornellaBirthday.day);
-      const remaining = nextOrnella - now;
-      ornellaEl.textContent = formatDuration(remaining);
-    }
-
+    if (ornellaEl) ornellaEl.textContent = formatDuration(getNextOccurrence(ornellaBirthday.month, ornellaBirthday.day) - now);
     const aaronEl = document.getElementById('aaron-birthday');
-    if (aaronEl) {
-      const nextAaron = getNextOccurrence(aaronBirthday.month, aaronBirthday.day);
-      const remaining = nextAaron - now;
-      aaronEl.textContent = formatDuration(remaining);
-    }
+    if (aaronEl) aaronEl.textContent = formatDuration(getNextOccurrence(aaronBirthday.month, aaronBirthday.day) - now);
   }
 
-  // Mettre à jour les timers toutes les secondes
   updateTimers();
   setInterval(updateTimers, 1000);
 
-  // GALERIE & LIGHTBOX
-  const galleryImgs = document.querySelectorAll('.gallery img');
-  const lightbox = document.getElementById('lightbox');
+  /* =====================================================
+     GALERIE LIGHTBOX avec navigation
+     ===================================================== */
+  const lightbox    = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-  const closeBtn = document.querySelector('.lightbox .close');
+  const closeBtn    = document.querySelector('.lightbox__close');
+  const prevBtn     = document.querySelector('.lightbox__prev');
+  const nextBtn     = document.querySelector('.lightbox__next');
+  const counterEl   = document.querySelector('.lightbox__counter');
+  const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
 
-  if (galleryImgs.length > 0 && lightbox && lightboxImg) {
-    // Ajouter un délai d'animation pour chaque image
-    galleryImgs.forEach((img, index) => {
-      img.style.animationDelay = `${index * 0.1}s`;
-      
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightbox.classList.remove('hidden');
-      });
+  let currentIdx = 0;
+
+  function openLightbox(idx) {
+    if (!lightbox || !lightboxImg) return;
+    currentIdx = idx;
+    const img = galleryItems[idx].querySelector('img');
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.remove('hidden');
+    if (counterEl) counterEl.textContent = `${idx + 1} / ${galleryItems.length}`;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function showNext() { openLightbox((currentIdx + 1) % galleryItems.length); }
+  function showPrev() { openLightbox((currentIdx - 1 + galleryItems.length) % galleryItems.length); }
+
+  if (galleryItems.length > 0 && lightbox) {
+    galleryItems.forEach((item, i) => {
+      item.addEventListener('click', () => openLightbox(i));
     });
 
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        lightbox.classList.add('hidden');
-      });
-    }
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (prevBtn)  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+    if (nextBtn)  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
 
     lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        lightbox.classList.add('hidden');
-      }
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox || lightbox.classList.contains('hidden')) return;
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft')  showPrev();
+      if (e.key === 'Escape')     closeLightbox();
     });
   }
 
-  // MULTI-JEUX
-  const jeux = [
-    { id: 'game-area', label: 'Attrape-cœurs 💖' },
-    { id: 'quiz-game', label: 'Quiz d\'amour 💘' },
-    { id: 'puzzle-game', label: 'Puzzle d\'amour 🧩' },
-    { id: 'memory-game', label: 'Memory cœur 🧠' }
-  ];
+  /* =====================================================
+     JEUX MULTI-ONGLETS
+     ===================================================== */
+  const gameTabs   = document.querySelectorAll('.game-tab');
+  const gamePanels = document.querySelectorAll('.game-panel');
 
-  const selectJeu = document.getElementById('select-jeu');
-  
-  if (selectJeu) {
-    jeux.forEach(jeu => {
-      const option = document.createElement('option');
-      option.value = jeu.id;
-      option.textContent = jeu.label;
-      selectJeu.appendChild(option);
-    });
-
-    selectJeu.addEventListener('change', function() {
-      jeux.forEach(jeu => {
-        const element = document.getElementById(jeu.id);
-        if (element) {
-          element.style.display = (jeu.id === this.value) ? 'block' : 'none';
+  if (gameTabs.length > 0) {
+    gameTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        gameTabs.forEach(t => t.classList.remove('active'));
+        gamePanels.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        const target = document.getElementById(tab.dataset.target);
+        if (target) {
+          target.classList.add('active');
+          if (tab.dataset.target === 'quiz-game')   initQuizGame();
+          if (tab.dataset.target === 'memory-game') initMemoryGame();
         }
       });
-
-      // Initialiser le jeu sélectionné
-      if (this.value === 'quiz-game') {
-        initQuizGame();
-      } else if (this.value === 'puzzle-game') {
-        initPuzzleGame();
-      } else if (this.value === 'memory-game') {
-        initMemoryGame();
-      }
     });
-
-    // Afficher le premier jeu par défaut
-    selectJeu.value = 'game-area';
-    selectJeu.dispatchEvent(new Event('change'));
+    if (gameTabs[0]) gameTabs[0].click();
   }
 
-  // JEU ATTRAPE-CŒURS
-  const gameArea = document.getElementById('game-area');
-  const player = document.getElementById('player');
-  const scoreDisplay = document.getElementById('score');
+  /* =====================================================
+     JEU ATTRAPE-CŒURS
+     ===================================================== */
+  const gameArea   = document.getElementById('game-area');
+  const player     = document.getElementById('player');
+  const scoreDisp  = document.getElementById('score');
   const winMessage = document.getElementById('win-message');
-  
+
   let gameScore = 0;
-  let playerX = 0;
-  let gameInterval = null;
-  
+  let playerX   = 0;
+
   if (gameArea && player) {
-    // Initialiser la position du joueur
     function initPlayer() {
-      playerX = gameArea.offsetWidth / 2 - 30;
+      playerX = gameArea.offsetWidth / 2 - 28;
       player.style.left = playerX + 'px';
     }
-    
     initPlayer();
     window.addEventListener('resize', initPlayer);
 
     document.addEventListener('keydown', (e) => {
-      if (!gameArea || gameArea.style.display === 'none' || gameArea.style.display === 'block') {
-        const currentDisplay = window.getComputedStyle(gameArea).display;
-        if (currentDisplay === 'none') return;
-      }
-
-      if (e.key === 'ArrowLeft' && playerX > 0) {
-        playerX -= 25;
-      } else if (e.key === 'ArrowRight' && playerX < gameArea.offsetWidth - 60) {
-        playerX += 25;
-      }
-      
+      const panel = document.getElementById('hearts-game');
+      if (panel && !panel.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft'  && playerX > 0) playerX -= 28;
+      if (e.key === 'ArrowRight' && playerX < gameArea.offsetWidth - 56) playerX += 28;
       player.style.left = playerX + 'px';
     });
 
-    function createFallingHeart() {
-      const currentDisplay = window.getComputedStyle(gameArea).display;
-      if (currentDisplay === 'none') return;
+    let touchStartX = 0;
+    gameArea.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    gameArea.addEventListener('touchmove', (e) => {
+      const dx = e.touches[0].clientX - touchStartX;
+      touchStartX = e.touches[0].clientX;
+      playerX = Math.max(0, Math.min(gameArea.offsetWidth - 56, playerX + dx));
+      player.style.left = playerX + 'px';
+    }, { passive: true });
 
+    function createFallingHeart() {
       const heart = document.createElement('div');
       heart.style.cssText = `
-        position: absolute;
-        top: 0;
-        font-size: 2rem;
-        animation: floatHeart 4s linear;
+        position:absolute; top:-40px;
+        font-size:1.8rem; pointer-events:none;
+        animation: floatHeart 3.5s linear forwards;
+        left:${Math.random() * (gameArea.offsetWidth - 32)}px;
       `;
       heart.textContent = '💖';
-      heart.style.left = Math.random() * (gameArea.offsetWidth - 40) + 'px';
       gameArea.appendChild(heart);
 
-      const checkCollision = setInterval(() => {
-        if (!heart.parentElement) {
-          clearInterval(checkCollision);
-          return;
-        }
-
-        const heartRect = heart.getBoundingClientRect();
-        const playerRect = player.getBoundingClientRect();
-        const gameRect = gameArea.getBoundingClientRect();
-
-        if (
-          heartRect.bottom >= playerRect.top &&
-          heartRect.left < playerRect.right &&
-          heartRect.right > playerRect.left &&
-          heartRect.top < playerRect.bottom
-        ) {
+      const check = setInterval(() => {
+        if (!heart.parentElement) { clearInterval(check); return; }
+        const hR = heart.getBoundingClientRect();
+        const pR = player.getBoundingClientRect();
+        if (hR.bottom >= pR.top && hR.left < pR.right && hR.right > pR.left && hR.top < pR.bottom) {
           gameScore++;
-          if (scoreDisplay) scoreDisplay.textContent = 'Score : ' + gameScore;
-          heart.remove();
-          clearInterval(checkCollision);
-
-          if (gameScore >= 25 && winMessage) {
-            winMessage.classList.remove('hidden');
-          }
+          if (scoreDisp) scoreDisp.textContent = 'Score : ' + gameScore;
+          heart.remove(); clearInterval(check);
+          if (gameScore >= 20 && winMessage) winMessage.classList.remove('hidden');
         }
+        if (hR.top > gameArea.getBoundingClientRect().bottom) { heart.remove(); clearInterval(check); }
+      }, 60);
 
-        if (heartRect.top > gameRect.bottom) {
-          heart.remove();
-          clearInterval(checkCollision);
-        }
-      }, 50);
-
-      setTimeout(() => {
-        if (heart.parentElement) heart.remove();
-        clearInterval(checkCollision);
-      }, 4500);
+      setTimeout(() => { if (heart.parentElement) { heart.remove(); clearInterval(check); } }, 4200);
     }
 
-    // Démarrer le jeu
-    if (gameInterval) clearInterval(gameInterval);
-    gameInterval = setInterval(createFallingHeart, 1200);
+    setInterval(createFallingHeart, 1100);
   }
 
-  // JEU QUIZ D'AMOUR
+  /* =====================================================
+     QUIZ D'AMOUR
+     ===================================================== */
   function initQuizGame() {
     const quizGame = document.getElementById('quiz-game');
-    if (!quizGame) return;
+    if (!quizGame || quizGame.dataset.init) return;
+    quizGame.dataset.init = '1';
 
     quizGame.innerHTML = `
-      <h2 style="text-align:center; color:var(--accent); margin-bottom:1.5rem;">Quiz d'amour 💘</h2>
+      <h2 style="text-align:center;color:var(--rose);margin-bottom:var(--s3);font-family:'Dancing Script',cursive;font-size:2rem;">Quiz d'amour 💘</h2>
       <form id="quiz-form">
-        <label>
-          <strong>Quelle est la date de notre premier bisou ?</strong><br>
-          <input type="radio" name="q1" value="24 avril"> 24 avril<br>
-          <input type="radio" name="q1" value="15 avril"> 15 avril<br>
-          <input type="radio" name="q1" value="27 aout"> 27 août
-        </label>
-        
-        <label>
-          <strong>Quel animal est notre mascotte ?</strong><br>
-          <input type="radio" name="q2" value="Monchhichi"> Monchhichi<br>
-          <input type="radio" name="q2" value="Chat"> Chat<br>
-          <input type="radio" name="q2" value="Lapin"> Lapin
-        </label>
-        
-        <label>
-          <strong>À quelle date est l'anniversaire d'Ornella ?</strong><br>
-          <input type="radio" name="q3" value="25 octobre"> 25 octobre<br>
-          <input type="radio" name="q3" value="26 février"> 26 février<br>
-          <input type="radio" name="q3" value="24 décembre"> 24 décembre
-        </label>
-        
-        <button type="submit">Valider mes réponses</button>
-        <div id="quiz-result" style="display:none;"></div>
+        <p style="color:var(--text-2);margin-bottom:var(--s2)"><strong>1. Quelle est la date de notre premier bisou ?</strong></p>
+        <label class="quiz-option"><input type="radio" name="q1" value="24 avril"> 24 avril 💋</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="15 avril"> 15 avril</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="27 aout"> 27 août</label>
+        <p style="color:var(--text-2);margin:var(--s3) 0 var(--s2)"><strong>2. Quel est notre mascotte préférée ?</strong></p>
+        <label class="quiz-option"><input type="radio" name="q2" value="Monchhichi"> Monchhichi 🐵</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="Chat"> Chat 🐱</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="Lapin"> Lapin 🐰</label>
+        <p style="color:var(--text-2);margin:var(--s3) 0 var(--s2)"><strong>3. Quand est l'anniversaire d'Ornella ?</strong></p>
+        <label class="quiz-option"><input type="radio" name="q3" value="25 octobre"> 25 octobre 🎂</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="26 février"> 26 février</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="24 décembre"> 24 décembre</label>
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top:var(--s3);width:100%;">Valider mes réponses ✨</button>
+        <div id="quiz-result" style="display:none;margin-top:var(--s2);"></div>
       </form>
     `;
 
     document.getElementById('quiz-form').onsubmit = function(e) {
       e.preventDefault();
       let score = 0;
-      
-      if (this.q1.value === '24 avril') score++;
+      if (this.q1.value === '24 avril')   score++;
       if (this.q2.value === 'Monchhichi') score++;
       if (this.q3.value === '25 octobre') score++;
-      
-      const result = document.getElementById('quiz-result');
-      result.style.display = 'block';
-      
+      const res = document.getElementById('quiz-result');
+      res.style.display = 'block';
+      res.style.padding = 'var(--s2) var(--s3)';
+      res.style.background = 'var(--rose)';
+      res.style.color = 'white';
+      res.style.borderRadius = 'var(--r-md)';
+      res.style.fontWeight = '600';
+      res.style.textAlign = 'center';
       if (score === 3) {
-        result.textContent = '🎉 Parfait ! Tu es incollable sur notre amour ! 💖';
+        res.textContent = '🎉 Parfait ! Tu es incollable sur notre amour ! 💖';
+        createConfetti();
       } else {
-        result.textContent = `Tu as eu ${score}/3 bonnes réponses. Réessaie ! 😊`;
+        res.textContent = `Tu as eu ${score}/3. Réessaie ! 😊`;
       }
     };
   }
 
-  // JEU CLIC RAPIDE
-  function initClickGame() {
-    const clickGame = document.getElementById('click-game');
-    if (!clickGame) return;
-
-    clickGame.innerHTML = `
-      <h2 style="text-align:center; color:var(--accent); margin-bottom:1rem;">Clic rapide 💥</h2>
-      <p style="text-align:center; margin-bottom:1.5rem;">Clique sur le plus de cœurs possible en 10 secondes !</p>
-      <button id="start-click" style="display:block; margin:0 auto 1rem; background:var(--accent); color:white; border:none; padding:1rem 2rem; border-radius:50px; cursor:pointer; font-weight:600;">Démarrer</button>
-      <div id="click-zone" style="min-height:200px; display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:1rem;"></div>
-      <div id="click-score" style="text-align:center; font-size:1.2rem; font-weight:600; color:var(--accent);"></div>
-    `;
-
-    document.getElementById('start-click').onclick = function() {
-      let clickScore = 0;
-      let timeLeft = 10;
-      const zone = document.getElementById('click-zone');
-      const scoreEl = document.getElementById('click-score');
-      
-      zone.innerHTML = '';
-      scoreEl.textContent = 'Temps restant : 10s';
-      this.disabled = true;
-
-      const heartInterval = setInterval(() => {
-        const heart = document.createElement('span');
-        heart.textContent = '💖';
-        heart.style.fontSize = '2.5rem';
-        heart.style.cursor = 'pointer';
-        heart.style.transition = 'transform 0.2s';
-        
-        heart.onmouseover = function() {
-          this.style.transform = 'scale(1.2)';
-        };
-        heart.onmouseout = function() {
-          this.style.transform = 'scale(1)';
-        };
-        
-        heart.onclick = function() {
-          clickScore++;
-          this.remove();
-        };
-        
-        zone.appendChild(heart);
-      }, 300);
-
-      const timer = setInterval(() => {
-        timeLeft--;
-        scoreEl.textContent = `Temps restant : ${timeLeft}s`;
-        
-        if (timeLeft <= 0) {
-          clearInterval(heartInterval);
-          clearInterval(timer);
-          zone.innerHTML = '';
-          scoreEl.textContent = `🎉 Score final : ${clickScore} cœurs attrapés ! 💖`;
-          document.getElementById('start-click').disabled = false;
-        }
-      }, 1000);
-    };
-  }
-
-  // JEU MEMORY
+  /* =====================================================
+     MEMORY GAME
+     ===================================================== */
   function initMemoryGame() {
     const memGame = document.getElementById('memory-game');
-    if (!memGame) return;
+    if (!memGame || memGame.dataset.init) return;
+    memGame.dataset.init = '1';
+
+    const hearts = ['💖','💗','❤️','💞','🧡','💜'];
+    const deck   = [...hearts, ...hearts].sort(() => Math.random() - 0.5);
 
     memGame.innerHTML = `
-      <h2 style="text-align:center; color:var(--accent); margin-bottom:1rem;">Memory cœur 🧠</h2>
-      <p style="text-align:center; margin-bottom:1.5rem;">Retrouve les paires de cœurs !</p>
-      <div id="memory-cards" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; max-width:400px; margin:0 auto;"></div>
+      <h2 style="text-align:center;color:var(--rose);margin-bottom:var(--s2);font-family:'Dancing Script',cursive;font-size:2rem;">Memory cœur 🧠</h2>
+      <p style="text-align:center;color:var(--text-2);margin-bottom:var(--s3)">Retrouve toutes les paires !</p>
+      <div class="memory-grid" id="memory-cards"></div>
     `;
 
-    const hearts = ['💖', '💗', '❤️', '💞', '🧡', '💜'];
-    const deck = [...hearts, ...hearts].sort(() => Math.random() - 0.5);
-    const cardsZone = document.getElementById('memory-cards');
-    
-    let firstCard = null;
-    let secondCard = null;
-    let matchedPairs = 0;
-    let canClick = true;
+    const grid = document.getElementById('memory-cards');
+    let first = null, second = null, canClick = true, pairs = 0;
 
-    deck.forEach((heart, index) => {
+    deck.forEach((symbol) => {
       const card = document.createElement('button');
       card.textContent = '❔';
-      card.style.cssText = `
-        font-size:2.5rem;
-        padding:1rem;
-        background:var(--bg-glass);
-        border:2px solid var(--accent);
-        border-radius:15px;
-        cursor:pointer;
-        transition:all 0.3s;
-        aspect-ratio:1;
-      `;
-      
-      card.dataset.index = index;
-      card.dataset.value = heart;
+      card.className = 'memory-card';
+      card.dataset.value = symbol;
 
-      card.onclick = function() {
-        if (!canClick || this.disabled || this === firstCard) return;
+      card.addEventListener('click', function() {
+        if (!canClick || this.disabled || this === first) return;
+        this.textContent = symbol;
+        this.classList.add('flipped');
 
-        this.textContent = heart;
-        this.style.background = 'var(--accent)';
-
-        if (!firstCard) {
-          firstCard = this;
+        if (!first) {
+          first = this;
         } else {
-          secondCard = this;
+          second = this;
           canClick = false;
-
           setTimeout(() => {
-            if (firstCard.dataset.value === secondCard.dataset.value) {
-              firstCard.disabled = true;
-              secondCard.disabled = true;
-              firstCard.style.opacity = '0.5';
-              secondCard.style.opacity = '0.5';
-              matchedPairs++;
-
-              if (matchedPairs === hearts.length) {
+            if (first.dataset.value === second.dataset.value) {
+              first.disabled = second.disabled = true;
+              first.style.opacity = second.style.opacity = '0.4';
+              pairs++;
+              if (pairs === hearts.length) {
                 setTimeout(() => {
-                  cardsZone.innerHTML = '<p style="text-align:center; font-size:1.5rem; color:var(--accent); grid-column:1/-1;">🎉 Bravo ! Toutes les paires trouvées ! 💕</p>';
-                }, 500);
+                  grid.innerHTML = '<p style="text-align:center;font-size:1.4rem;color:var(--rose);font-family:\'Dancing Script\',cursive;grid-column:1/-1;padding:var(--s4)">🎉 Bravo ! Toutes les paires trouvées ! 💕</p>';
+                  createConfetti();
+                }, 400);
               }
             } else {
-              firstCard.textContent = '❔';
-              secondCard.textContent = '❔';
-              firstCard.style.background = 'var(--bg-glass)';
-              secondCard.style.background = 'var(--bg-glass)';
+              first.textContent = second.textContent = '❔';
+              first.classList.remove('flipped');
+              second.classList.remove('flipped');
             }
-
-            firstCard = null;
-            secondCard = null;
+            first = second = null;
             canClick = true;
-          }, 800);
+          }, 900);
         }
-      };
+      });
 
-      cardsZone.appendChild(card);
+      grid.appendChild(card);
     });
   }
 
-  // LETTRE SECRÈTE (effet machine à écrire)
-  const letterElement = document.getElementById('secret-letter');
-  
-  if (letterElement) {
-    const letterText = `Ma douce Miminella 🐵💖,
+  /* =====================================================
+     LETTRE SECRÈTE (machine à écrire)
+     ===================================================== */
+  const letterEl = document.getElementById('secret-letter');
 
-Chaque instant passé avec toi est un moment génial que je garde précieusement dans mon cœur.  
-Ton sourire illumine mes journées, et ton amour rend ma vie magique.  
+  if (letterEl) {
+    const text = `Ma douce Miminella 🐵💖,
 
-Je promets d'être toujours là pour toi, aujourd'hui, demain et pour toujours surtout à jamais!  
-Tu es ma moitié que je recherchais depuis ma naissance et je t'ai enfin trouvée, alors je ne vais plus te lâcher.
-Tu es aussi et surtout, mon bonheur infini. 
+Chaque instant passé avec toi est un moment génial que je garde précieusement dans mon cœur.
+Ton sourire illumine mes journées, et ton amour rend ma vie magique.
+
+Je promets d'être toujours là pour toi, aujourd'hui, demain et pour toujours — surtout à jamais !
+Tu es ma moitié que je recherchais depuis ma naissance et je t'ai enfin trouvée,
+alors je ne vais plus te lâcher.
+Tu es aussi et surtout, mon bonheur infini.
 
 Ton MimiAaron 💕`;
 
-    let charIndex = 0;
-
-    function typeWriter() {
-      if (charIndex < letterText.length) {
-        letterElement.textContent += letterText.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeWriter, 50);
+    let i = 0;
+    function typeNext() {
+      if (i < text.length) {
+        letterEl.textContent += text[i++];
+        setTimeout(typeNext, 45);
       } else {
-        setTimeout(triggerSurprise, 500);
+        setTimeout(triggerSurprise, 600);
       }
     }
 
     function triggerSurprise() {
-      // Créer des cœurs qui tombent
-      for (let i = 0; i < 30; i++) {
+      for (let k = 0; k < 30; k++) {
         setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.className = 'falling-heart';
-          heart.textContent = ['❤️', '💖', '💞', '💗'][Math.floor(Math.random() * 4)];
-          heart.style.left = Math.random() * 100 + 'vw';
-          heart.style.fontSize = (20 + Math.random() * 20) + 'px';
-          document.body.appendChild(heart);
-
-          setTimeout(() => heart.remove(), 4000);
-        }, i * 200);
+          const h = document.createElement('div');
+          h.className = 'falling-heart';
+          h.textContent = ['❤️','💖','💞','💗'][Math.floor(Math.random() * 4)];
+          h.style.left = Math.random() * 100 + 'vw';
+          h.style.fontSize = (18 + Math.random() * 20) + 'px';
+          document.body.appendChild(h);
+          setTimeout(() => h.remove(), 5000);
+        }, k * 180);
       }
-
-      // Afficher le message d'amour
       setTimeout(() => {
-        const loveMsg = document.createElement('div');
-        loveMsg.id = 'love-message';
-        loveMsg.textContent = 'Je t\'aime Miminella 💖';
-        document.body.appendChild(loveMsg);
-
-        setTimeout(() => loveMsg.remove(), 6000);
-      }, 1000);
+        const msg = document.createElement('div');
+        msg.id = 'love-message';
+        msg.textContent = 'Je t\'aime Miminella 💖';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 6500);
+      }, 1200);
     }
 
-    typeWriter();
+    typeNext();
   }
 
-  // Ajouter des particules animées au fond
-  createParticles();
-
-  function createParticles() {
-    const particlesBg = document.querySelector('.particles-bg');
-    if (!particlesBg) return;
-
-    for (let i = 0; i < 20; i++) {
-      const particle = document.createElement('div');
-      particle.style.cssText = `
-        position: absolute;
-        width: ${Math.random() * 10 + 5}px;
-        height: ${Math.random() * 10 + 5}px;
-        background: var(--accent);
-        opacity: ${Math.random() * 0.3 + 0.1};
-        border-radius: 50%;
-        left: ${Math.random() * 100}%;
-        top: ${Math.random() * 100}%;
-        animation: float ${Math.random() * 10 + 5}s ease-in-out infinite;
-        animation-delay: ${Math.random() * 5}s;
+  /* =====================================================
+     PARTICULES DE FOND
+     ===================================================== */
+  const particlesBg = document.querySelector('.particles-bg');
+  if (particlesBg) {
+    for (let k = 0; k < 18; k++) {
+      const p = document.createElement('div');
+      const size = Math.random() * 8 + 4;
+      p.style.cssText = `
+        position:absolute;
+        width:${size}px; height:${size}px;
+        background:var(--rose);
+        opacity:${Math.random() * 0.18 + 0.04};
+        border-radius:50%;
+        left:${Math.random() * 100}%;
+        top:${Math.random() * 100}%;
+        animation: float ${Math.random() * 12 + 8}s ease-in-out infinite;
+        animation-delay:${Math.random() * 6}s;
       `;
-      particlesBg.appendChild(particle);
+      particlesBg.appendChild(p);
     }
   }
 
-  // Bouton retour en haut
-  const backToTopBtn = document.createElement('button');
-  backToTopBtn.className = 'back-to-top';
-  backToTopBtn.innerHTML = '↑';
-  backToTopBtn.setAttribute('aria-label', 'Retour en haut');
-  document.body.appendChild(backToTopBtn);
+  /* =====================================================
+     RETOUR EN HAUT
+     ===================================================== */
+  const backBtn = document.createElement('button');
+  backBtn.className = 'back-to-top';
+  backBtn.innerHTML = '↑';
+  backBtn.setAttribute('aria-label', 'Retour en haut');
+  document.body.appendChild(backBtn);
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      backToTopBtn.classList.add('visible');
-    } else {
-      backToTopBtn.classList.remove('visible');
-    }
-  });
+    backBtn.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
 
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
+  backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
 });
+
+/* =====================================================
+   NOTIFICATION HELPER (global)
+   ===================================================== */
+function showNotification(msg) {
+  let notif = document.querySelector('.notification');
+  if (!notif) {
+    notif = document.createElement('div');
+    notif.className = 'notification';
+    document.body.appendChild(notif);
+  }
+  notif.textContent = msg;
+  notif.classList.add('show');
+  setTimeout(() => notif.classList.remove('show'), 3500);
+}
+
+/* =====================================================
+   CONFETTI (global)
+   ===================================================== */
+function createConfetti() {
+  const colors = ['#d64f78','#f7a8c0','#c8973a','#fde8f0','#e87da0','#a18cd1'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left   = Math.random() * 100 + 'vw';
+      c.style.top    = '-10px';
+      c.style.width  = (6 + Math.random() * 8) + 'px';
+      c.style.height = (6 + Math.random() * 8) + 'px';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+      c.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }, i * 25);
+  }
+}
+
+function createSparkles() {
+  const syms = ['⭐','✨','💫','🌟'];
+  for (let i = 0; i < 25; i++) {
+    setTimeout(() => {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.textContent = syms[Math.floor(Math.random() * syms.length)];
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.top  = (Math.random() * 50 + 40) + 'vh';
+      s.style.fontSize = (1 + Math.random()) + 'rem';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 2200);
+    }, i * 60);
+  }
+}
+
+/* =====================================================
+   ROULETTE CANVAS (shared by mots & defis)
+   ===================================================== */
+function initRouletteWheel(canvasId, items, storageKey, renderResult) {
+  const canvas    = document.getElementById(canvasId);
+  const spinBtn   = document.getElementById('spinBtn');
+  const resultDiv = document.getElementById('result');
+  if (!canvas || !spinBtn || !resultDiv) return;
+
+  const ctx    = canvas.getContext('2d');
+  const N      = items.length;
+  const COLORS = [
+    '#d64f78','#e87da0','#c8973a','#a18cd1','#e8b86d',
+    '#8b5cf6','#c0415f','#d4875a','#7c6ab3','#e57090',
+    '#b87a35','#9a58d0'
+  ];
+
+  let currentAngle = 0;
+
+  function drawWheel(angle) {
+    const W  = canvas.width;
+    const cx = W / 2;
+    const cy = W / 2;
+    const r  = cx - 8;
+    const slice = (2 * Math.PI) / N;
+
+    ctx.clearRect(0, 0, W, W);
+
+    for (let i = 0; i < N; i++) {
+      const start = angle + i * slice;
+      const end   = start + slice;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, start, end);
+      ctx.closePath();
+      ctx.fillStyle = COLORS[i % COLORS.length];
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(start) * r, cy + Math.sin(start) * r);
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Emoji
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(start + slice / 2);
+      ctx.textAlign = 'right';
+      const fontSize = Math.max(14, Math.floor(r * 0.11));
+      ctx.font = `${fontSize}px serif`;
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.shadowColor = 'rgba(0,0,0,0.25)';
+      ctx.shadowBlur  = 4;
+      const emoji = items[i].emoji || (items[i].type === 'bon' ? '🎁' : '💌');
+      ctx.fillText(emoji, r - 14, 5);
+      ctx.restore();
+    }
+
+    // Outer rim
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    // Center
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.15);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, '#f0f0f0');
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.15, 0, 2 * Math.PI);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.font = `${Math.floor(r * 0.12)}px serif`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowBlur   = 0;
+    ctx.fillText('💖', cx, cy);
+  }
+
+  drawWheel(currentAngle);
+
+  function canSpinToday() {
+    const last = localStorage.getItem(storageKey);
+    if (!last) return true;
+    return new Date(last).toDateString() !== new Date().toDateString();
+  }
+
+  if (!canSpinToday()) {
+    spinBtn.textContent = 'Reviens demain 💕';
+    spinBtn.disabled    = true;
+  }
+
+  spinBtn.addEventListener('click', () => {
+    if (spinBtn.disabled && canSpinToday()) return;
+    if (!canSpinToday()) {
+      resultDiv.innerHTML = `
+        <div class="daily-limit-msg">
+          <div style="font-size:2.5rem;margin-bottom:0.75rem">⏰</div>
+          <div style="font-size:1.1rem;font-weight:700">Tu as déjà tourné la roue aujourd'hui !</div>
+          <div style="font-size:0.9rem;margin-top:0.5rem;opacity:0.9">Reviens demain pour une nouvelle surprise 💖</div>
+        </div>`;
+      return;
+    }
+
+    spinBtn.disabled = true;
+    resultDiv.innerHTML = '<div class="result-title">La roue tourne... 🎰</div><div class="result-text">Prépare-toi !</div>';
+
+    const targetIdx    = Math.floor(Math.random() * N);
+    const totalSpins   = 7 + Math.random() * 4;
+    const slice        = (2 * Math.PI) / N;
+    const targetAngle  = -(targetIdx * slice + slice / 2) - Math.PI / 2;
+    const totalAngle   = Math.PI * 2 * totalSpins + (targetAngle - currentAngle % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+
+    const duration = 5500;
+    const startTime  = performance.now();
+    const startAngle = currentAngle;
+
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+    function animate(now) {
+      const t = Math.min((now - startTime) / duration, 1);
+      currentAngle = startAngle + totalAngle * easeOut(t);
+      drawWheel(currentAngle);
+
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        localStorage.setItem(storageKey, new Date().toISOString());
+        resultDiv.innerHTML = renderResult(items[targetIdx]);
+        spinBtn.textContent = '✅ À demain !';
+
+        if (items[targetIdx].type === 'bon' || items[targetIdx].difficulty === 'hard') {
+          createConfetti();
+        } else {
+          createSparkles();
+        }
+      }
+    }
+
+    requestAnimationFrame(animate);
+  });
+}

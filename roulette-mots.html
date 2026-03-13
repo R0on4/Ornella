@@ -3,431 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Roulette Mots Doux 💝</title>
+  <title>Roulette Mots Doux 💝 — Miminella</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    .roulette-container {
-      max-width: 700px;
-      margin: 2rem auto;
-      text-align: center;
-    }
-
-    .wheel-wrapper {
-      position: relative;
-      width: 500px;
-      height: 500px;
-      margin: 3rem auto;
-    }
-
-    .roulette-wheel {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: var(--bg-glass);
-      backdrop-filter: blur(20px);
-      box-shadow: 
-        0 25px 50px rgba(255, 107, 157, 0.3),
-        inset 0 0 60px rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-      border: 8px solid var(--accent);
-    }
-
-    .wheel-section {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      transform-origin: 100% 100%;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding-left: 30%;
-      font-size: 2rem;
-      color: white;
-      font-weight: 700;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      transition: filter 0.3s ease;
-      clip-path: polygon(100% 100%, 0 100%, 0 0);
-    }
-
-    .wheel-section:hover {
-      filter: brightness(1.1);
-    }
-
-    .wheel-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 140px;
-      height: 140px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3.5rem;
-      box-shadow: 
-        0 10px 30px rgba(255, 107, 157, 0.5),
-        inset 0 0 20px rgba(255, 255, 255, 0.2);
-      z-index: 100;
-      border: 6px solid white;
-      animation: centerPulse 2.5s ease-in-out infinite;
-    }
-
-    @keyframes centerPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.05); }
-    }
-
-    .wheel-pointer {
-      position: absolute;
-      top: -50px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 25px solid transparent;
-      border-right: 25px solid transparent;
-      border-top: 50px solid var(--accent);
-      filter: drop-shadow(0 5px 10px rgba(255, 107, 157, 0.5));
-      z-index: 200;
-    }
-
-    .spin-button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 1.5rem 4rem;
-      border-radius: 60px;
-      font-size: 1.4rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: var(--shadow-md);
-      transition: all 0.3s ease;
-      margin: 2.5rem 0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .spin-button:hover:not(:disabled) {
-      background: var(--accent-hover);
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .spin-button:active:not(:disabled) {
-      transform: translateY(-2px);
-    }
-
-    .spin-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .result-display {
-      background: var(--bg-card);
-      backdrop-filter: blur(10px);
-      border-radius: 25px;
-      padding: 2.5rem;
-      margin: 2rem 0;
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-sm);
-      border-left: 5px solid var(--accent);
-    }
-
-    .result-title {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.5rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    .result-text {
-      font-size: 1.3rem;
-      color: var(--text-primary);
-      line-height: 1.8;
-      text-align: center;
-      font-weight: 500;
-    }
-
-    .bon-display {
-      margin-top: 1.5rem;
-      padding: 1.5rem 2rem;
-      background: var(--accent);
-      border-radius: 20px;
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      box-shadow: var(--shadow-sm);
-      animation: bonSlideIn 0.5s ease;
-    }
-
-    @keyframes bonSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .daily-limit-msg {
-      background: linear-gradient(135deg, var(--accent), var(--gradient-2));
-      color: white;
-      padding: 2rem;
-      border-radius: 20px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      box-shadow: var(--shadow-md);
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(var(--spin-rotation)); }
-    }
-
-    .spinning {
-      animation: spin var(--spin-duration) cubic-bezier(0.17, 0.67, 0.12, 0.99);
-    }
-
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      pointer-events: none;
-      z-index: 9999;
-      animation: confettiFall 3s ease-out forwards;
-    }
-
-    @keyframes confettiFall {
-      to {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .wheel-wrapper {
-        width: 350px;
-        height: 350px;
-      }
-
-      .wheel-section {
-        font-size: 1.5rem;
-        padding-left: 25%;
-      }
-
-      .wheel-center {
-        width: 100px;
-        height: 100px;
-        font-size: 2.5rem;
-      }
-
-      .spin-button {
-        padding: 1.2rem 3rem;
-        font-size: 1.2rem;
-      }
-    }
-  </style>
 </head>
 <body>
   <div class="particles-bg" aria-hidden="true"></div>
-  
   <nav class="navbar">
     <div class="nav-container">
-      <div class="nav-brand">Miminella 💖</div>
-      <button class="nav-toggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <a href="index.html" class="nav-brand">Miminella 💖</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="nav-menu">
         <a href="index.html" class="nav-link">Accueil</a>
         <a href="galerie.html" class="nav-link">Galerie</a>
         <a href="timeline.html" class="nav-link">Timeline</a>
         <a href="jeu.html" class="nav-link">Jeux</a>
-        <a href="blog.html" class="nav-link">Blog</a>
-        <a href="roulette-mots.html" class="nav-link active">Roulette Mots</a>
+        <a href="blog.html" class="nav-link">Rêves</a>
+        <a href="roulette-mots.html" class="nav-link active">Mots Doux</a>
         <a href="roulette-defis.html" class="nav-link">Défis</a>
         <a href="wishlist.html" class="nav-link">Wishlist</a>
         <a href="playlist.html" class="nav-link">Playlist</a>
       </div>
     </div>
   </nav>
-
-  <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
-    <span class="theme-icon">🌙</span>
-  </button>
-
-  <main style="padding-top: 100px; min-height: 100vh;">
+  <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème"><span class="theme-icon">🌙</span></button>
+  <main class="page-main">
     <div class="container">
-      <div class="hero-content">
-        <h1 class="hero-title">Roulette des Mots Doux 💝</h1>
-        <p class="hero-subtitle">
-          Tourne la roue pour découvrir un mot doux ou une surprise (une fois par jour)
-        </p>
+      <div class="page-header">
+        <div class="page-header__badge">💝 Une fois par jour</div>
+        <h1 class="page-header__title">Roulette des Mots Doux 💝</h1>
+        <p class="page-header__subtitle">Tourne la roue pour découvrir un mot doux ou une surprise spéciale (une fois par jour) ✨</p>
+      </div>
 
-        <div class="roulette-container">
-          <div class="wheel-wrapper">
-            <div class="wheel-pointer"></div>
-            <div class="roulette-wheel" id="wheel">
-              <div class="wheel-center">💖</div>
-            </div>
-          </div>
+      <div class="roulette-wrap">
+        <div class="wheel-container">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheel-canvas" width="420" height="420" class="wheel-canvas"></canvas>
+        </div>
 
-          <button class="spin-button" id="spinBtn">
-            🎰 Tourner la roue
-          </button>
+        <button class="spin-btn" id="spinBtn">🎰 Tourner la roue</button>
 
-          <div class="result-display" id="result">
-            <div class="result-title">Prête ?</div>
-            <div class="result-text">Clique sur le bouton pour découvrir ta surprise</div>
-          </div>
+        <div class="result-display" id="result">
+          <div class="result-title">Prête ? 💝</div>
+          <div class="result-text">Clique sur le bouton pour découvrir ta surprise !</div>
         </div>
       </div>
+
     </div>
   </main>
-
   <script src="js/script.js"></script>
   <script>
-    const STORAGE_KEY = 'lastSpinDate_mots';
-    
     const items = [
-      { type: 'mot', text: 'Tu es la plus belle personne du monde 🌟' },
-      { type: 'bon', text: '🎁 BON pour un câlin de 10 minutes (Quand on se reverra ♥)' },
-      { type: 'mot', text: 'Ton sourire illumine ma journée ☀️' },
-      { type: 'bon', text: '🎁 BON pour un massage de 15 minutes (Quand on se reverra ♥)' },
-      { type: 'mot', text: 'Je pense à toi à chaque instant 💭' },
-      { type: 'bon', text: '🎁 BON pour une soirée film de ton choix' },
-      { type: 'mot', text: 'Tu es mon rayon de soleil quotidien 🌞' },
-      { type: 'bon', text: '🎁 BON pour un petit-déjeuner au lit (Quand on se reverra ♥)' },
-      { type: 'mot', text: 'Chaque jour avec toi est magique ✨' },
-      { type: 'bon', text: '🎁 BON pour une photo de ce que tu veux' },
-      { type: 'mot', text: 'Tu es ma personne préférée au monde 💖' },
-      { type: 'bon', text: '🎁 BON pour une surprise' }
+      { type: 'mot', emoji: '💌', text: 'Tu es la plus belle personne du monde 🌟' },
+      { type: 'bon', emoji: '🎁', text: '🎁 BON pour un câlin de 10 minutes (quand on se reverra ♥)' },
+      { type: 'mot', emoji: '☀️', text: 'Ton sourire illumine ma journée ☀️' },
+      { type: 'bon', emoji: '🎁', text: '🎁 BON pour un massage de 15 minutes (quand on se reverra ♥)' },
+      { type: 'mot', emoji: '💭', text: 'Je pense à toi à chaque instant 💭' },
+      { type: 'bon', emoji: '🎁', text: '🎁 BON pour une soirée film de ton choix 🎬' },
+      { type: 'mot', emoji: '🌞', text: 'Tu es mon rayon de soleil quotidien 🌞' },
+      { type: 'bon', emoji: '🎁', text: '🎁 BON pour un petit-déjeuner au lit (quand on se reverra ♥)' },
+      { type: 'mot', emoji: '✨', text: 'Chaque jour avec toi est magique ✨' },
+      { type: 'bon', emoji: '🎁', text: '🎁 BON pour une photo de ce que tu veux 📸' },
+      { type: 'mot', emoji: '💖', text: 'Tu es ma personne préférée au monde 💖' },
+      { type: 'bon', emoji: '🎁', text: '🎁 BON pour une surprise de MimiAaron 💝' }
     ];
 
-    const colors = [
-      'linear-gradient(135deg, #ff9a9e, #fecfef)',
-      'linear-gradient(135deg, #fbc2eb, #a18cd1)',
-      'linear-gradient(135deg, #fad0c4, #ffd1ff)',
-      'linear-gradient(135deg, #a18cd1, #fbc2eb)',
-      'linear-gradient(135deg, #ffecd2, #fcb69f)',
-      'linear-gradient(135deg, #ff9a9e, #fad0c4)',
-      'linear-gradient(135deg, #fecfef, #ff9a9e)',
-      'linear-gradient(135deg, #a18cd1, #fad0c4)',
-      'linear-gradient(135deg, #fcb69f, #ffecd2)',
-      'linear-gradient(135deg, #ffd1ff, #fbc2eb)',
-      'linear-gradient(135deg, #fbc2eb, #ff9a9e)',
-      'linear-gradient(135deg, #fad0c4, #a18cd1)'
-    ];
-
-    const wheel = document.getElementById('wheel');
-    const spinBtn = document.getElementById('spinBtn');
-    const resultDiv = document.getElementById('result');
-    let isSpinning = false;
-
-    items.forEach((item, index) => {
-      const section = document.createElement('div');
-      section.className = 'wheel-section';
-      const angle = (360 / items.length) * index;
-      section.style.transform = `rotate(${angle}deg) skewY(${-90 + 360/items.length}deg)`;
-      section.style.background = colors[index];
-      section.textContent = item.type === 'bon' ? '🎁' : '💌';
-      wheel.appendChild(section);
-    });
-
-    function canSpinToday() {
-      const lastSpin = localStorage.getItem(STORAGE_KEY);
-      if (!lastSpin) return true;
-      
-      const lastDate = new Date(lastSpin);
-      const today = new Date();
-      
-      return lastDate.toDateString() !== today.toDateString();
-    }
-
-    function createConfetti() {
-      for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * 100 + 'vw';
-          confetti.style.top = -10 + 'px';
-          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-          confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-          document.body.appendChild(confetti);
-          setTimeout(() => confetti.remove(), 3000);
-        }, i * 30);
+    function renderResult(item) {
+      let html = `<div class="result-title">✨ Tu as gagné !</div>`;
+      html += `<div class="result-text">${item.text}</div>`;
+      if (item.type === 'bon') {
+        html += `<div class="bon-display">💝 Ce bon est valable dès maintenant ! Montre-le pour l'utiliser 💝</div>`;
       }
+      return html;
     }
 
-    spinBtn.addEventListener('click', () => {
-      if (isSpinning) return;
-      
-      if (!canSpinToday()) {
-        resultDiv.innerHTML = `
-          <div class="daily-limit-msg">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">⏰</div>
-            <div>Tu as déjà tourné la roue aujourd'hui !</div>
-            <div style="font-size: 0.95rem; margin-top: 0.8rem; opacity: 0.95;">Reviens demain pour une nouvelle surprise 💖</div>
-          </div>
-        `;
-        return;
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('wheel-canvas');
+      if (canvas) {
+        const size = Math.min(window.innerWidth - 60, 420);
+        canvas.width  = size;
+        canvas.height = size;
       }
-      
-      isSpinning = true;
-      spinBtn.disabled = true;
-      resultDiv.innerHTML = '<div class="result-title">La roue tourne... 🎰</div><div class="result-text">Prépare-toi !</div>';
-
-      const spins = 5 + Math.random() * 3;
-      const randomIndex = Math.floor(Math.random() * items.length);
-      const baseRotation = 360 * spins;
-      const itemAngle = 360 / items.length;
-      const targetRotation = baseRotation + (360 - (randomIndex * itemAngle + itemAngle / 2));
-
-      wheel.style.setProperty('--spin-rotation', `${targetRotation}deg`);
-      wheel.style.setProperty('--spin-duration', '5s');
-      wheel.classList.add('spinning');
-
-      setTimeout(() => {
-        wheel.classList.remove('spinning');
-        wheel.style.transform = `rotate(${targetRotation % 360}deg)`;
-        
-        const selectedItem = items[randomIndex];
-        let resultHTML = `<div class="result-title">✨ Tu as gagné !</div>`;
-        resultHTML += `<div class="result-text">${selectedItem.text}</div>`;
-        
-        if (selectedItem.type === 'bon') {
-          resultHTML += `<div class="bon-display">💝 Ce bon est valable dès maintenant ! Montre-le pour l'utiliser 💝</div>`;
-          createConfetti();
-        }
-        
-        resultDiv.innerHTML = resultHTML;
-        
-        localStorage.setItem(STORAGE_KEY, new Date().toISOString());
-        
-        isSpinning = false;
-        spinBtn.disabled = false;
-        spinBtn.textContent = '✅ Déjà tourné aujourd\'hui';
-        spinBtn.style.opacity = '0.6';
-      }, 5000);
+      initRouletteWheel('wheel-canvas', items, 'lastSpinDate_mots', renderResult);
     });
-
-    if (!canSpinToday()) {
-      spinBtn.textContent = 'Reviens demain 💕';
-      spinBtn.disabled = true;
-    }
   </script>
 </body>
 </html>
