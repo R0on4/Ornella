@@ -4,33 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Pour Ma Miminella 💖</title>
-  <meta name="description" content="Site d'amour pour Miminella">
+  <meta name="description" content="Un site d'amour pour Miminella, par MimiAaron">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="particles-bg" aria-hidden="true"></div>
-  
+
+  <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
-      <div class="nav-brand">Miminella 💖</div>
+      <a href="index.html" class="nav-brand">Miminella 💖</a>
       <button class="nav-toggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
       <div class="nav-menu">
-        <a href="index.html" class="nav-link active">Accueil</a>
-        <a href="galerie.html" class="nav-link">Galerie</a>
-        <a href="timeline.html" class="nav-link">Timeline</a>
-        <a href="jeu.html" class="nav-link">Jeux</a>
-        <a href="blog.html" class="nav-link">Blog</a>
-        <a href="roulette-mots.html" class="nav-link ">Mots</a>
+        <a href="index.html"          class="nav-link active">Accueil</a>
+        <a href="galerie.html"        class="nav-link">Galerie</a>
+        <a href="timeline.html"       class="nav-link">Timeline</a>
+        <a href="jeu.html"            class="nav-link">Jeux</a>
+        <a href="blog.html"           class="nav-link">Rêves</a>
+        <a href="roulette-mots.html"  class="nav-link">Mots Doux</a>
         <a href="roulette-defis.html" class="nav-link">Défis</a>
-        <a href="wishlist.html" class="nav-link">Wishlist</a>
-        <a href="playlist.html" class="nav-link">Playlist</a>
+        <a href="wishlist.html"       class="nav-link">Wishlist</a>
+        <a href="playlist.html"       class="nav-link">Playlist</a>
       </div>
     </div>
   </nav>
@@ -39,65 +38,125 @@
     <span class="theme-icon">🌙</span>
   </button>
 
+  <!-- FLOATING HEARTS -->
   <div class="floating-hearts" aria-hidden="true">
-    <div class="heart-particle" style="left:10%;animation-delay:0s">❤️</div>
-    <div class="heart-particle" style="left:30%;animation-delay:2s">💖</div>
-    <div class="heart-particle" style="left:70%;animation-delay:1s">💞</div>
-    <div class="heart-particle" style="left:85%;animation-delay:3s">💗</div>
+    <div class="heart-particle" style="left:8%;animation-delay:0s">❤️</div>
+    <div class="heart-particle" style="left:28%;animation-delay:3s">💖</div>
+    <div class="heart-particle" style="left:55%;animation-delay:1.5s">💞</div>
+    <div class="heart-particle" style="left:78%;animation-delay:4.5s">💗</div>
+    <div class="heart-particle" style="left:92%;animation-delay:2s">💕</div>
   </div>
 
+  <!-- HERO -->
   <main class="hero-section">
-    <div class="container">
-      <div class="hero-content">
-        <h1 class="hero-title">Coucou ma Miminella 💖</h1>
-        <p class="hero-subtitle">
-          Chaque jour à tes côtés est un vrai bonheur, plus doux qu'un Monchhichi 🐵💕
-        </p>
-        
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">💖</div>
-            <h3>Ensemble depuis</h3>
-            <p id="compteur" class="stat-value">--</p>
-          </div>
-          
-          <div class="stat-card">
-            <div class="stat-icon">🎄</div>
-            <h3>Prochaine rencontre</h3>
-            <p id="next-event" class="stat-value">--</p>
-          </div>
-          
-          <div class="stat-card">
-            <div class="stat-icon">🎂</div>
-            <h3>Anniversaire Miminella</h3>
-            <p id="ornella-birthday" class="stat-value">--</p>
-          </div>
-          
-          <div class="stat-card">
-            <div class="stat-icon">🎉</div>
-            <h3>Mon anniversaire</h3>
-            <p id="aaron-birthday" class="stat-value">--</p>
-          </div>
-        </div>
+    <div class="hero-card">
 
-        <div class="citation-box">
-          <p id="citation">--</p>
-        </div>
+      <div class="page-header__badge">💌 Un petit coin rien que pour toi</div>
 
-        <div class="cta-section">
-          <div id="coeur-secret" class="secret-heart" title="Clique-moi 💌">
-            <span class="heart-pulse">❤️</span>
-          </div>
-          <button id="code-secret-btn" class="btn-secondary">🔐 Page secrète bonus (besoin d'un code)</button>
-        </div>
+      <h1 class="hero-title">Coucou ma Miminella 💖</h1>
 
-        <p class="hero-footer">
-          Ornella, tu es ma joie quotidienne, ma petite Miminella adorée 🐵💖<br>
-          <small style="opacity: 0.7; font-size: 0.9rem;">💡 Psst... Il y a un livre d'or secret quelque part... Sauras-tu trouver le code ?</small>
-        </p>
+      <p class="hero-subtitle">
+        Chaque jour à tes côtés est un vrai bonheur,<br>
+        plus doux qu'un Monchhichi 🐵💕
+      </p>
+
+      <!-- TIMERS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon">💖</span>
+          <h3>Ensemble depuis</h3>
+          <p id="compteur" class="stat-value">--</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🎄</span>
+          <h3>Prochaine rencontre</h3>
+          <p id="next-event" class="stat-value">--</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🎂</span>
+          <h3>Anniv Miminella</h3>
+          <p id="ornella-birthday" class="stat-value">--</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🎉</span>
+          <h3>Mon anniversaire</h3>
+          <p id="aaron-birthday" class="stat-value">--</p>
+        </div>
       </div>
+
+      <!-- CITATION -->
+      <div class="citation-box">
+        <p id="citation">--</p>
+      </div>
+
+      <!-- SECRETS -->
+      <div class="cta-section">
+        <div id="coeur-secret" class="secret-heart" title="Clique-moi 💌" role="button" tabindex="0" aria-label="Lettre secrète">
+          <span class="heart-pulse">❤️</span>
+        </div>
+        <button id="code-secret-btn" class="btn btn-primary">
+          🔐 Page secrète bonus
+        </button>
+      </div>
+
+      <p class="hero-footer">
+        Ornella, tu es ma joie quotidienne, ma petite Miminella adorée 🐵💖<br>
+        <small>💡 Psst... Il y a un livre d'or secret quelque part... Sauras-tu trouver le code ?</small>
+      </p>
+
     </div>
   </main>
+
+  <!-- QUICK LINKS -->
+  <section style="padding: 2rem 2rem 4rem; position: relative; z-index: 10;">
+    <div class="container">
+      <div class="page-header" style="margin-bottom: 2rem;">
+        <h2 style="font-family:'Dancing Script',cursive;font-size:2.2rem;color:var(--rose)">Explorer notre univers 💫</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;">
+        <a href="galerie.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">📸</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Galerie</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Nos plus beaux souvenirs</div>
+        </a>
+        <a href="timeline.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">📅</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Timeline</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Notre histoire</div>
+        </a>
+        <a href="blog.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">🌟</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Nos Rêves</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Notre futur ensemble</div>
+        </a>
+        <a href="roulette-mots.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">💝</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Mots Doux</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Roulette des surprises</div>
+        </a>
+        <a href="roulette-defis.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">🎯</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Défis</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Relève le challenge</div>
+        </a>
+        <a href="jeu.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">🎮</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Jeux</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Pour s'amuser</div>
+        </a>
+        <a href="wishlist.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">📋</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Wishlist</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Nos souhaits partagés</div>
+        </a>
+        <a href="playlist.html" class="card" style="text-align:center;text-decoration:none;padding:1.5rem 1rem;">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">🎵</div>
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.25rem">Playlist</div>
+          <div style="font-size:0.85rem;color:var(--text-3)">Nos chansons</div>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <script src="js/script.js"></script>
 </body>
