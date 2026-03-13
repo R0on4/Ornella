@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pour Ma Miminella 💖</title>
+  <meta name="description" content="Site d'amour pour Miminella">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="particles-bg" aria-hidden="true"></div>
+  
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">Miminella 💖</div>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-menu">
+        <a href="index.html" class="nav-link active">Accueil</a>
+        <a href="galerie.html" class="nav-link">Galerie</a>
+        <a href="timeline.html" class="nav-link">Timeline</a>
+        <a href="jeu.html" class="nav-link">Jeux</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="roulette-mots.html" class="nav-link ">Mots</a>
+        <a href="roulette-defis.html" class="nav-link">Défis</a>
+        <a href="wishlist.html" class="nav-link">Wishlist</a>
+        <a href="playlist.html" class="nav-link">Playlist</a>
+      </div>
+    </div>
+  </nav>
+
+  <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <div class="floating-hearts" aria-hidden="true">
+    <div class="heart-particle" style="left:10%;animation-delay:0s">❤️</div>
+    <div class="heart-particle" style="left:30%;animation-delay:2s">💖</div>
+    <div class="heart-particle" style="left:70%;animation-delay:1s">💞</div>
+    <div class="heart-particle" style="left:85%;animation-delay:3s">💗</div>
+  </div>
+
+  <main class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Coucou ma Miminella 💖</h1>
+        <p class="hero-subtitle">
+          Chaque jour à tes côtés est un vrai bonheur, plus doux qu'un Monchhichi 🐵💕
+        </p>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">💖</div>
+            <h3>Ensemble depuis</h3>
+            <p id="compteur" class="stat-value">--</p>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">🎄</div>
+            <h3>Prochaine rencontre</h3>
+            <p id="next-event" class="stat-value">--</p>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">🎂</div>
+            <h3>Anniversaire Miminella</h3>
+            <p id="ornella-birthday" class="stat-value">--</p>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">🎉</div>
+            <h3>Mon anniversaire</h3>
+            <p id="aaron-birthday" class="stat-value">--</p>
+          </div>
+        </div>
+
+        <div class="citation-box">
+          <p id="citation">--</p>
+        </div>
+
+        <div class="cta-section">
+          <div id="coeur-secret" class="secret-heart" title="Clique-moi 💌">
+            <span class="heart-pulse">❤️</span>
+          </div>
+          <button id="code-secret-btn" class="btn-secondary">🔐 Page secrète bonus (besoin d'un code)</button>
+        </div>
+
+        <p class="hero-footer">
+          Ornella, tu es ma joie quotidienne, ma petite Miminella adorée 🐵💖<br>
+          <small style="opacity: 0.7; font-size: 0.9rem;">💡 Psst... Il y a un livre d'or secret quelque part... Sauras-tu trouver le code ?</small>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

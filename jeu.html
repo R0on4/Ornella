@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Les Jeux de l'Amour 💖</title>
+  <meta name="description" content="Jeux interactifs pour Miminella">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="particles-bg" aria-hidden="true"></div>
+  
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">Miminella 💖</div>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-menu">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="galerie.html" class="nav-link">Galerie</a>
+        <a href="timeline.html" class="nav-link">Timeline</a>
+        <a href="jeu.html" class="nav-link active">Jeux</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="roulette-mots.html" class="nav-link ">Mots</a>
+        <a href="roulette-defis.html" class="nav-link">Défis</a>
+        <a href="wishlist.html" class="nav-link">Wishlist</a>
+        <a href="playlist.html" class="nav-link">Playlist</a>
+      </div>
+    </div>
+  </nav>
+
+  <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <main style="padding-top: 100px; min-height: 100vh;">
+    <div class="container">
+      <div class="jeu-selector">
+        <h2>Les jeux de l'Amour 💕</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">Choisis ton jeu préféré :</p>
+        <select id="select-jeu"></select>
+      </div>
+
+      <div id="game-area" class="jeu-card">
+        <div id="player"></div>
+        <div id="score">Score : 0</div>
+        <div id="win-message" class="hidden">
+          🎉 Bravo Miminella 🐵💖 !<br>
+          Tu as gagné tout l'amour de MimiAaron 💕 !
+        </div>
+      </div>
+
+      <div id="quiz-game" class="jeu-card" style="display:none;"></div>
+      <div id="puzzle-game" class="jeu-card" style="display:none;"></div>
+      <div id="memory-game" class="jeu-card" style="display:none;"></div>
+    </div>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
